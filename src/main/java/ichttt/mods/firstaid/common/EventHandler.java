@@ -85,6 +85,9 @@ public class EventHandler {
         if (damageModel == null) return;
         DamageSource source = event.getSource();
 
+        if (!isTreePunchingDamage(source))
+            return;
+
         if (amountToDamage == Float.MAX_VALUE || Float.isNaN(amountToDamage) || amountToDamage == Float.POSITIVE_INFINITY) {
             damageModel.forEach(damageablePart -> damageablePart.currentHealth = 0F);
             if (player instanceof ServerPlayer)
@@ -118,6 +121,17 @@ public class EventHandler {
 
         DamageDistribution.handleDamageTaken(damageDistribution, damageModel, amountToDamage, player, source, addStat, true);
 
+        if (isTreePunchingDamage(source)) {
+            EnumPlayerPart arm = player.getMainArm() == HumanoidArm.RIGHT
+            ? EnumPlayerPart.RIGHT_ARM
+            : EnumPlayerPart.LEFT_ARM;
+
+            AbstractPlayerDamageModel model = CommonUtils.getDamageModel(player);
+            if (model != null) {
+                model.getDamageablePart(arm).damage(event.getAmount());
+            }
+        }
+        
         event.setCanceled(true);
 
         hitList.remove(player);
