@@ -132,6 +132,9 @@ public class EventHandler {
             }
         }
         
+        System.out.println("DAMAGE SOURCE ID: " + source.type().msgId());
+System.out.println("DAMAGE SOURCE NAME: " + source);
+        
         event.setCanceled(true);
 
         hitList.remove(player);
