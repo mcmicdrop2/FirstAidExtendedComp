@@ -326,4 +326,10 @@ public class EventHandler {
             damageModel.scheduleResync();
         }
     }
+    
+    private static boolean isTreePunchingDamage(DamageSource source) {
+        ResourceLocation id = source.type().msgId();
+
+        return id.contains("tree");
+        }
 }
